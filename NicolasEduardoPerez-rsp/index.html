@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parcial Personas</title>
+    <link rel="stylesheet" href="./css/styles.css">
+    <!---->
+    <script src="./js/Persona.js"></script>
+    <script src="./js/Cliente.js"></script>
+    <script src="./js/Main.js"></script>
+</head>
+<body>
+    <h1>Recuperatorio segundo parcial Nicolas Eduardo Perez</h1>
+    <div class="contenedorFlex">
+        <div id="contGrilla" class="grilla">
+            <h3>Alta Persona</h3>
+            <div class="separador">
+                <br>
+            </div>
+            <label for="id" >Id</label>
+            <br>
+            <input type="text" disabled name="id" class="inputGrilla">
+            <br>
+            <label for="nombre" >Nombre</label>
+            <br>
+            <input type="text" name="nombre" placeholder="Ingrese nombre" id="gNombre" class="inputGrilla">
+            <br>
+
+            <label for="apellido">Apellido</label>
+            <br>
+            <input type="text" name="apellido" placeholder="Ingrese apellido" id="gApellido" class="inputGrilla">
+            <br>
+
+            <label for="edad">Edad</label>
+            <br>
+            <input type="number" name="edad" id="gEdad" class="inputGrilla">
+            <br>
+            <label for="gSelect">Sexo</label>
+            <select name="gSelect" id="gSelect" class="inputGrilla">
+                <option value="todos" selected>Seleccione sexo</option>
+                <option value="femenino">Femenino</option>
+                <option value="masculino">Masculino</option>
+            </select>
+            <br>
+            
+            <div class="divBoton">
+                <input type="button" value="Guardar" id="btnGuardar" class="botonGuardar">
+                <input type="button" value="Cancelar" id="btnCancelar" class="botonCancelar">
+            </div>
+        </div>
+
+    </div>
+    <br>
+    <input type="button" value="Alta" id="btnAgregar" class="botonAgregar">
+    <br>
+    <br>
+    <div class="separador">
+        <br>
+    </div>
+    <h1 class="titulo">Filtros</h1>
+    <div class="separador">
+        <br>
+    </div>
+    <div class="opciones" >
+        <label for="selectTipo" class="inOpciones">Filtrar por: </label>
+        <select name="selectTipo" id="selectTipo" class="inOpciones">
+            <option value="todos">Seleccionar tipo</option>
+            <option value="femenino">Femenino</option>
+            <option value="masculino">Masculino</option>
+        </select>
+        <label for="btnPromedio"class="inOpciones">Promedio de edad:</label>
+        <input type="text" id="promedio"class="inOpciones">
+        <input type="button" value="Calcular Promedio" id="btnPromedio"class="inOpciones">
+
+    </div>
+    <div class="tituloCampos">
+        <h1>Campos mostrados</h1>
+        <h2>Tildar los campos a mostrar</h2>
+    </div>
+    
+    <div class="separador">
+        <br>
+    </div>
+    <div class="checkMostrar">
+        <input type="checkbox" name="checkId" id="mostrarId">
+        <label for="chekId">Id</label>
+        <input type="checkbox" name="checkNombre" id="mostrarNombre">
+        <label for="chekNombre">Nombre</label>
+        <input type="checkbox" name="checkApellido" id="mostrarApellido">
+        <label for="chekApellido">Apellido</label>
+        <input type="checkbox" name="checkEdad" id="mostrarEdad">
+        <label for="chekEdad">Edad</label>
+    </div>
+    <div class="separador">
+        <br>
+    </div>
+    <h1 class="titulo">Lista de Personas</h1>
+    <div class="separador">
+        <br>
+    </div>
+    
+    <div class="cont" id="tabla">
+        <table>
+            <thead id="tCabecera">
+                
+            </thead>
+            <tbody id="tCuerpo" class="cuerpo">
+                
+            </tbody>
+        </table>
+    </div>
+    
+</body>
+</html>
