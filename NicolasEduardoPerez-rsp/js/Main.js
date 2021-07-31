@@ -22,6 +22,8 @@ window.addEventListener("load", function () {
     selecVista.addEventListener("change", main);
     var promedio = Main.$("btnPromedio");
     promedio.addEventListener("click", main);
+    var eliminar = Main.$("btnEliminar");
+    eliminar.addEventListener("click", main);
 });
 var Main = /** @class */ (function () {
     function Main() {
@@ -48,14 +50,17 @@ var Main = /** @class */ (function () {
             case "gSelect":
                 // this.MostrarTipos();
                 break;
-            case "btnEliminar":
-                this.Eliminar(evt);
-                break;
             case "selectTipo":
                 this.MostrarPorTipo();
                 break;
             case "btnPromedio":
                 this.CalcularPromedio();
+                break;
+            case "btnEliminar":
+                this.EliminarCompleto();
+                break;
+            default:
+                this.Eliminar(evt);
                 break;
         }
     };
@@ -238,7 +243,7 @@ var Main = /** @class */ (function () {
             tr.appendChild(td);
             var nodo = document.createTextNode(vh.Sexo);
             td.appendChild(nodo);
-            tr.addEventListener("click", this.AbrirGrilla);
+            tr.addEventListener("click", this);
         }
         tCabecera.appendChild(trH);
         tCuerpo.appendChild(tr);
@@ -252,34 +257,61 @@ var Main = /** @class */ (function () {
         }
         return false;
     };
+    Main.prototype.EliminarCompleto = function () {
+        var id = parseInt(Main.$("gId").value);
+        if (this.EliminarId(id)) {
+            this.CerrarGrilla();
+            this.MostrarPorTipo();
+        }
+        var btnEliminar = Main.$("btnEliminar");
+        btnEliminar.style.display = "none";
+        var btnGuardar = Main.$("btnGuardar");
+        btnGuardar.style.display = "block";
+    };
+    Main.prototype.BuscarIndice = function (id) {
+        var indice = 0;
+        for (var i = 0; i < this.listaVh.length; i++) {
+            if (this.listaVh[i].id == id) {
+                break;
+            }
+            indice++;
+        }
+        return indice;
+    };
     Main.prototype.Eliminar = function (ev) {
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
+        var _a, _b, _c;
         var elemento = ev.target;
         var tcuerpo = Main.$("tCuerpo");
-        var id = (_b = (_a = elemento.parentElement) === null || _a === void 0 ? void 0 : _a.parentNode) === null || _b === void 0 ? void 0 : _b.childNodes.item(0).textContent;
-        var nombre = (_d = (_c = elemento.parentElement) === null || _c === void 0 ? void 0 : _c.parentNode) === null || _d === void 0 ? void 0 : _d.childNodes.item(1).textContent;
-        var apellido = (_f = (_e = elemento.parentElement) === null || _e === void 0 ? void 0 : _e.parentNode) === null || _f === void 0 ? void 0 : _f.childNodes.item(2).textContent;
-        var edad = (_h = (_g = elemento.parentElement) === null || _g === void 0 ? void 0 : _g.parentNode) === null || _h === void 0 ? void 0 : _h.childNodes.item(3).textContent;
-        var sexo = (_k = (_j = elemento.parentElement) === null || _j === void 0 ? void 0 : _j.parentNode) === null || _k === void 0 ? void 0 : _k.childNodes.item(4).textContent;
-        Main.$("gId").value = id;
-        Main.$("gNombre").value = nombre;
-        Main.$("gApellido").value = apellido;
-        Main.$("gEdad").value = edad;
-        Main.$("gSexo").value = sexo;
-        /*
-        if((<HTMLInputElement>Main.$("mostrarId")).checked)
-        {
-            let id = parseInt(<string>elemento.parentElement?.parentNode?.childNodes.item(0).textContent);
-            
-            if(this.EliminarId(id))
-            {
-                tcuerpo.removeChild(<Node>elemento.parentElement?.parentNode);
+        //this.AbrirGrilla();
+        var indice = 0;
+        var grilla = Main.$("contGrilla");
+        grilla.style.display = "block";
+        var id = (_a = elemento.parentElement) === null || _a === void 0 ? void 0 : _a.childNodes[0].textContent;
+        if (id != "") {
+            var aux = this.listaVh[this.BuscarIndice(parseInt(id))];
+            if (aux != null) {
+                Main.$("gId").value = aux.id.toString();
+                Main.$("gNombre").value = aux.nombre;
+                Main.$("gApellido").value = aux.apellido;
+                Main.$("gEdad").value = aux.edad.toString();
+                //(<HTMLInputElement>Main.$("gSexo")).innerText = aux.sexo.toString();
+            }
+            var btnEliminar = Main.$("btnEliminar");
+            btnEliminar.style.display = "block";
+            var btnGuardar = Main.$("btnGuardar");
+            btnGuardar.style.display = "none";
+            if (Main.$("mostrarId").checked) {
+                var id_1 = parseInt((_c = (_b = elemento.parentElement) === null || _b === void 0 ? void 0 : _b.parentNode) === null || _c === void 0 ? void 0 : _c.childNodes.item(0).textContent);
+                if (this.EliminarId(id_1)) {
+                }
+            }
+            else {
+                alert("Debe seleccionar la casilla de ID para eliminar");
             }
         }
-        else
-        {
+        else {
             alert("Debe seleccionar la casilla de ID para eliminar");
-        }*/
+        }
     };
     Main.prototype.CalcularPromedio = function () {
         var seleccion = Main.$("selectTipo").value;

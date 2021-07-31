@@ -34,6 +34,9 @@ window.addEventListener("load",()=>{
     let promedio = Main.$("btnPromedio");
     promedio.addEventListener("click",main);
 
+    let eliminar = Main.$("btnEliminar");
+    eliminar.addEventListener("click",main);
+
 });
 
 class Main implements EventListenerObject
@@ -68,15 +71,19 @@ class Main implements EventListenerObject
             case "gSelect":
                // this.MostrarTipos();
                 break;
-            case "btnEliminar":
-                this.Eliminar(evt);
-                break;
+            
             case "selectTipo":
                 this.MostrarPorTipo();
                 break;
             case "btnPromedio":
                 this.CalcularPromedio();
                 break;
+            case "btnEliminar":
+                this.EliminarCompleto();
+                break;
+                default:
+                    this.Eliminar(evt);
+                    break;
                 
         }
     }
@@ -316,7 +323,7 @@ class Main implements EventListenerObject
             tr.appendChild(td);
             let nodo = document.createTextNode(vh.Sexo);
             td.appendChild(nodo);
-            tr.addEventListener("click",this.AbrirGrilla);
+            tr.addEventListener("click",this);
         }
         
         tCabecera.appendChild(trH);
@@ -336,37 +343,94 @@ class Main implements EventListenerObject
         
         return false;
     }
+    public EliminarCompleto():void
+    {
+        let id = parseInt((<HTMLInputElement>Main.$("gId")).value);
+                
+        if(this.EliminarId(id))
+        {
+            this.CerrarGrilla();
+            this.MostrarPorTipo();
+            
+        }
+       
+        let btnEliminar = Main.$("btnEliminar");
+            btnEliminar.style.display = "none";
+
+            let btnGuardar = Main.$("btnGuardar");
+            btnGuardar.style.display = "block";
+        
+    }
+    public BuscarIndice(id:number):number
+    {
+        let indice = 0;
+        for(let i=0; i<this.listaVh.length;i++)
+        {
+            if(this.listaVh[i].id == id)
+            {
+
+               break;
+
+            }
+            indice++;
+        }
+        return indice;
+    }
     public Eliminar(ev:Event):void
     {
         let elemento = <HTMLElement>ev.target;
         let tcuerpo = Main.$("tCuerpo");
+        //this.AbrirGrilla();
+        let indice = 0;
+        let grilla = Main.$("contGrilla");
+        grilla.style.display = "block";
 
-        let id = <string>elemento.parentElement?.parentNode?.childNodes.item(0).textContent;
-        let nombre = <string>elemento.parentElement?.parentNode?.childNodes.item(1).textContent;
-        let apellido = <string>elemento.parentElement?.parentNode?.childNodes.item(2).textContent;
-        let edad = <string>elemento.parentElement?.parentNode?.childNodes.item(3).textContent;
-        let sexo = <string>elemento.parentElement?.parentNode?.childNodes.item(4).textContent;
-
-
-        (<HTMLInputElement>Main.$("gId")).value = id;
-        (<HTMLInputElement>Main.$("gNombre")).value = nombre;
-        (<HTMLInputElement>Main.$("gApellido")).value = apellido;
-        (<HTMLInputElement>Main.$("gEdad")).value = edad;
-        (<HTMLInputElement>Main.$("gSexo")).value = sexo;
-        /*
-        if((<HTMLInputElement>Main.$("mostrarId")).checked)
+        
+        let id = <string>elemento.parentElement?.childNodes[0].textContent;
+        if(id != "")
         {
-            let id = parseInt(<string>elemento.parentElement?.parentNode?.childNodes.item(0).textContent);
-            
-            if(this.EliminarId(id))
+            let aux:Cliente = this.listaVh[this.BuscarIndice(parseInt(id))];
+        
+            if(aux != null)
             {
-                tcuerpo.removeChild(<Node>elemento.parentElement?.parentNode);
+                (<HTMLInputElement>Main.$("gId")).value =aux.id.toString();
+
+            (<HTMLInputElement>Main.$("gNombre")).value = aux.nombre;
+                (<HTMLInputElement>Main.$("gApellido")).value = aux.apellido;
+                (<HTMLInputElement>Main.$("gEdad")).value = aux.edad.toString();
+                //(<HTMLInputElement>Main.$("gSexo")).innerText = aux.sexo.toString();
             }
+            
+            let btnEliminar = Main.$("btnEliminar");
+            btnEliminar.style.display = "block";
+
+            let btnGuardar = Main.$("btnGuardar");
+            btnGuardar.style.display = "none";
+        
+            if((<HTMLInputElement>Main.$("mostrarId")).checked)
+            {
+                let id = parseInt(<string>elemento.parentElement?.parentNode?.childNodes.item(0).textContent);
+                
+                if(this.EliminarId(id))
+                {
+                    
+                    
+                }
+            }
+            else
+            {
+                alert("Debe seleccionar la casilla de ID para eliminar");
+            }
+
         }
         else
         {
             alert("Debe seleccionar la casilla de ID para eliminar");
-        }*/
+        }
+        
+
+        
+        
     }
     public CalcularPromedio():void
     {
